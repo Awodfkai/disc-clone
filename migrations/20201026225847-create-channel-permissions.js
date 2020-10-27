@@ -9,10 +9,14 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       channel_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: "Channels" },
       },
       role_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: "Roles" },
       },
       manage_channel: {
         type: Sequelize.BOOLEAN
