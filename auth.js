@@ -13,19 +13,20 @@ const getUserToken = (user) => {
 }
 
 const checkUserToken = (req, res, next) => {
+  console.log('checking user token ...')
   const {token} = req;
   if(!token){
     req.user = null;
-    return next();
+    return next({status:401, message: 'no token'});
   }
   return jwt.verify(token, secret, null, async (err, jwtPayload) => {
     if(err) {
-      err.status = 401;
+      err.status = 403;
       return next(err);
     }
-    const { user_id } = jwtPayload.data;
+    const { id } = jwtPayload.data;
     try{
-      req.user = await User.findByPk(user_id);
+      req.user = await User.findByPk(id);
     } catch(e){
       return next(e);
     }
