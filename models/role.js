@@ -1,14 +1,14 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Roles = sequelize.define('Roles', {
+  const Role = sequelize.define('Role', {
     name: DataTypes.STRING,
     invite: DataTypes.BOOLEAN,
     ban: DataTypes.BOOLEAN,
     kick: DataTypes.BOOLEAN,
     admin: DataTypes.BOOLEAN
   }, {});
-  Roles.associate = function(models) {
-    // associations can be defined here
+  Role.associate = function(models) {
+    Role.hasMany(models.ServerMember, {foreignKey:'role_id', onDelete:'CASCADE'})
   };
-  return Roles;
+  return Role;
 };
