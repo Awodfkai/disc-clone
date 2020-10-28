@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { Server } = require('../../db/models');
+const { Server, ServerMember } = require('../../db/models');
 const { asyncHandler } = require('../../utils');
 const { authenticated } = require('../../auth');
 
@@ -11,10 +11,15 @@ router.post(
   authenticated,
   asyncHandler(async (req, res, next) => {
     console.log('made it into the post route for server create')
-    const { name } = req.body;
+    const { name, user } = req.body;
     const server = await Server.create({
       name,
     });
+    await ServerMember.create({
+      server_id: server.id,
+      user_id: user.id,
+      role_id: 1,
+    })
     res.status(201).json(server)
   })
 )
