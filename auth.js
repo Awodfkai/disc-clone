@@ -1,40 +1,56 @@
 const jwt = require("jsonwebtoken");
+const bearerToken = require('express-bearer-token');
+const uuid = require('uuid').v4;
 
 const { jwtConfig: {secret, expiresIn} } = require('./config/index');
 const { User } = require('./db/models');
 
-const getUserToken = (user) => {
-  const userData = {
+function generateToken(user) {
+  const data = {
     id: user.id,
-    username: user.username,
-  }
-  const token = jwt.sign({ data: userData }, secret, { expiresIn: parseInt(expiresIn, 10),})
-  return token;
+  };
+  const jwtid = uuid();
+
+  return {
+    jti: jwtid,
+    token: jwt.sign({ data }, secret, { expiresIn: Number.parseInt(expiresIn), jwtid })
+  };
 }
 
-const checkUserToken = (req, res, next) => {
-  console.log('checking user token ...')
-  const {token} = req;
-  if(!token){
-    req.user = null;
-    return next({status:401, message: 'no token'});
+function restoreUser(req, res, next) {
+  console.log('checking token')
+  const { token } = req;
+
+  if (!token) {
+    return next({ status: 401, message: 'no token' });
   }
-  return jwt.verify(token, secret, null, async (err, jwtPayload) => {
-    if(err) {
+
+  return jwt.verify(token, secret, null, async (err, payload) => {
+    if (err) {
       err.status = 403;
       return next(err);
     }
-    const { id } = jwtPayload.data;
-    try{
-      req.user = await User.findByPk(id);
-    } catch(e){
+
+    const tokenId = payload.jti;
+
+    try {
+      req.user = await User.findOne( {where: {tokenId}});
+    } catch (e) {
       return next(e);
     }
+
+    if (!req.user) {
+      return next({ status: 404, message: 'session not found' });
+    }
+
     next();
-  })
+  });
 }
 
+const authenticated = [bearerToken(), restoreUser];
+
+
 module.exports = {
-  getUserToken,
-  checkUserToken,
+  generateToken,
+  authenticated,
 }

@@ -2,13 +2,13 @@ const express = require('express');
 
 const { Server } = require('../../db/models');
 const { asyncHandler } = require('../../utils');
-const { checkUserToken } = require('../../auth');
+const { authenticated } = require('../../auth');
 
 const router = express.Router();
 
 router.post(
   '/create',
-  // checkUserToken,
+  authenticated,
   asyncHandler(async (req, res, next) => {
     console.log('made it into the post route for server create')
     const { name } = req.body;
@@ -21,7 +21,7 @@ router.post(
 
 router.delete(
   '/:id',
-  // checkUserToken,
+  authenticated,
   asyncHandler(async (req, res, next) => {
     await Server.destroy({id:req.params.id})
   })

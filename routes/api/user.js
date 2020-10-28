@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 const { User } = require("../../db/models");
 const { asyncHandler, checkUsername } = require("../../utils");
-const { getUserToken, authenticated } = require('../../auth');
+const { generateToken, authenticated } = require('../../auth');
 const user = require("../../db/models/user");
 
 const router = express.Router();
@@ -25,8 +25,11 @@ router.post(
       username,
       password: hashedPassword,
     });
-    const token = getUserToken(user);
-    console.log('made it')
+
+    const { jti, token } = generateToken(user);
+    user.tokenId = jti;
+    await user.save();
+
     res.cookie("auth-token", token);
     res.status(201).json({
       user: {id: user.id},
@@ -47,7 +50,7 @@ router.post(
       err.errors = ['Invalid credential provided'];
       return next(err);
     }
-    const token = getUserToken(userExists);
+    const token = generateToken(userExists);
     res.cookie('auth-token', token);
     res.status(201).json({
       user: {id: userExists.id},

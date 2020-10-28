@@ -16,6 +16,9 @@ module.exports = {
         type: Sequelize.STRING.BINARY,
         allowNull: false,
       },
+      tokenId: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
