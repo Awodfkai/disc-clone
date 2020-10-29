@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { Server, ServerMember } = require('../../db/models');
+const { Server, ServerMember, Channel } = require('../../db/models');
 const { asyncHandler } = require('../../utils');
 const { authenticated } = require('../../auth');
 
@@ -11,14 +11,18 @@ router.post(
   authenticated,
   asyncHandler(async (req, res, next) => {
     console.log('made it into the post route for server create')
-    const { name, user } = req.body;
+    const { name, user_id } = req.body;
     const server = await Server.create({
       name,
     });
     await ServerMember.create({
       server_id: server.id,
-      user_id: user.id,
+      user_id,
       role_id: 1,
+    })
+    await Channel.create({
+      server_id: server.id,
+      name: 'Default'
     })
     res.status(201).json(server)
   })

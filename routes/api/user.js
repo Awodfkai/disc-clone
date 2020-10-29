@@ -59,7 +59,7 @@ router.get(
   })
 )
 
-router.delete(
+router.get(
   '/log-out',
   asyncHandler(async (req, res, next) => {
     res.clearCookie('auth-token');
