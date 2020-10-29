@@ -24,6 +24,22 @@ router.post(
   })
 )
 
+router.post(
+  '/:id/join',
+  authenticated,
+  asyncHandler(async (req, res, next) => {
+    const server_id = req.params.id;
+    console.log('made it into the post route for server create')
+    const { user } = req.body;
+    await ServerMember.create({
+      server_id,
+      user_id: user.id,
+      role_id: 2,
+    })
+    res.status(201).json(server)
+  })
+)
+
 router.delete(
   '/:id',
   authenticated,
