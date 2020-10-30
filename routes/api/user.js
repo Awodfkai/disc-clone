@@ -38,7 +38,7 @@ router.post(
   })
 )
 
-router.get(
+router.put(
   '/log-in',
   asyncHandler(async (req, res, next) => {
     const { username, password } = req.body;
@@ -59,7 +59,7 @@ router.get(
   })
 )
 
-router.get(
+router.delete(
   '/log-out',
   asyncHandler(async (req, res, next) => {
     res.clearCookie('auth-token');
