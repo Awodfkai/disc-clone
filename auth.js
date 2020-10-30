@@ -32,6 +32,7 @@ function restoreUser(req, res, next) {
     }
 
     const tokenId = payload.jti;
+    console.log('tokenId in auth.js: ', tokenId)
 
     try {
       req.user = await User.findOne( {where: {tokenId}});

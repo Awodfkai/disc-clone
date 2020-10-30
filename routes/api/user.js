@@ -42,8 +42,6 @@ router.post(
   '/log-in',
   asyncHandler(async (req, res, next) => {
     const { username, password } = req.body;
-    console.log('username: ', username)
-    console.log('password: ', password)
     const userExists = await User.findOne({where:{username}});
     console.log(userExists)
     if(!userExists || !bcrypt.compareSync(password, userExists.password.toString())){
@@ -53,8 +51,10 @@ router.post(
       err.errors = ['Invalid credential provided'];
       return next(err);
     }
-    console.log('response')
     const token = generateToken(userExists);
+    const jti = token.jti;
+    userExists.tokenId = jti;
+    await userExists.save();
     res.cookie('auth-token', token);
     res.status(200).json({
       user: {id: userExists.id},
