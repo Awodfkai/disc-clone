@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 const expressBearerToken = require('express-bearer-token')
 
 const { jwtConfig: {secret} } = require('./config')
@@ -9,7 +10,8 @@ const routes = require('./routes');
 
 const app = express();
 
-app.use(cookieParser(secret))
+app.use(cors());
+app.use(cookieParser(secret));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
