@@ -22,7 +22,7 @@ router.post(
     })
     await Channel.create({
       server_id: server.id,
-      name: 'Default'
+      name: 'General'
     })
     res.status(201).json(server)
   })

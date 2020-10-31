@@ -26,7 +26,7 @@ router.post(
       password: hashedPassword,
     });
 
-    const { jti, token } = generateToken(user);
+    const {jti, token} = generateToken(user);
     user.tokenId = jti;
     await user.save();
 
@@ -53,12 +53,14 @@ router.post(
     }
     const token = generateToken(userExists);
     const jti = token.jti;
+    console.log('jti in user.js api route: ', jti)
     userExists.tokenId = jti;
     await userExists.save();
     res.cookie('auth-token', token);
     res.status(200).json({
       user: {id: userExists.id},
       token,
+      jti
     })
   })
 )
