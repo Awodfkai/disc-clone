@@ -10,11 +10,11 @@ router.get(
   '/:id/messages',
   asyncHandler(async (req, res, next) => {
     const channel_id = req.params.id;
-    const messages = await Channel.findAll({
+    const messages = await Message.findAll({
       where: {channel_id},
       order: [
         ['createdAt', 'ASC']
-      ]
+      ],
     })
     res.status(200).json(messages)
   })
