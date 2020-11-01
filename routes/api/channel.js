@@ -1,11 +1,37 @@
 const express = require('express');
 
-const { Channel } = require('../../db/models');
+const { Channel, Message } = require('../../db/models');
 const { asyncHandler } = require('../../utils');
 const { authenticated } = require('../../auth');
 
 const router = express.Router();
 
+router.get(
+  '/:id/messages',
+  asyncHandler(async (req, res, next) => {
+    const channel_id = req.params.id;
+    const messages = await Channel.findAll({
+      where: {channel_id},
+      order: [
+        ['createdAt', 'ASC']
+      ]
+    })
+    res.status(200).json(messages)
+  })
+)
+
+router.get(
+  '/:id',
+  asyncHandler(async (req, res, next) => {
+    const server_id = req.params.id
+    const channels = await Channel.findAll({
+      where: {server_id},
+      attributes: ['id', 'name']
+    })
+    res.status(200).json(channels)
+  })
+)
+  
 router.post(
   '/create',
   authenticated,
