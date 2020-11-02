@@ -9,6 +9,8 @@ module.exports = {
         ban: true,
         kick: true,
         admin: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         name: 'basic',
@@ -16,6 +18,8 @@ module.exports = {
         ban: false,
         kick: false,
         admin: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       }
     ], {});
   },
