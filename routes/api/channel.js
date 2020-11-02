@@ -32,6 +32,18 @@ router.get(
     res.status(200).json(channels)
   })
 )
+
+router.get(
+  '/:id/name',
+  asyncHandler(async (req, res, next) => {
+    const id = req.params.id
+    const channel = await Channel.findOne({
+      where: { id },
+      attributes: ['name']
+    })
+    res.status(200).json(channel)
+  })
+)
   
 router.post(
   '/create',
