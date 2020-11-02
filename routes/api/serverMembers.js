@@ -26,4 +26,21 @@ router.get(
   })
 )
 
+router.post(
+  '/server/:id/user/:username',
+  asyncHandler(async (req, res, next) => {
+    const username = req.params.username;
+    const server_id = req.params.id;
+    const user = await User.findOne({
+      where: {username},
+    });
+    await ServerMember.create({
+      server_id,
+      user_id: user.id,
+      role_id: 2,
+    })
+    res.status(201)
+  })
+)
+
 module.exports = router;

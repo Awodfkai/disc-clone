@@ -9,6 +9,13 @@ module.exports = {
         ban: true,
         kick: true,
         admin: true,
+      },
+      {
+        name: 'basic',
+        invite: true,
+        ban: false,
+        kick: false,
+        admin: false,
       }
     ], {});
   },
