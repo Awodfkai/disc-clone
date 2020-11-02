@@ -10,10 +10,9 @@ router.post(
   '/create',
   authenticated,
   asyncHandler(async (req, res, next) => {
-    console.log('post route for message create')
-    const { channel_id, user_id, message } = req.body;
+    const { channel_id, username, message } = req.body;
     const message = await  Message.create({
-      channel_id, user_id, message
+      channel_id, username, message
     });
     res.status(201).json(message)
   })

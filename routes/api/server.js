@@ -10,7 +10,6 @@ router.post(
   '/create',
   authenticated,
   asyncHandler(async (req, res, next) => {
-    console.log('made it into the post route for server create')
     const { name, user_id } = req.body;
     const server = await Server.create({
       name,
@@ -33,7 +32,6 @@ router.post(
   authenticated,
   asyncHandler(async (req, res, next) => {
     const server_id = req.params.id;
-    console.log('made it into the post route for server create')
     const { user } = req.body;
     await ServerMember.create({
       server_id,

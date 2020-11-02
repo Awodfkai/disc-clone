@@ -1,20 +1,24 @@
 const { Channel, Message } = require('./db/models');
 
-const addMessageToChannel = async (user_id, channel_id, message) => {
-  console.log(channelId, message);
+const addMessageToChannel = async (username, channel_id, message) => {
+  console.log('inside addMessageToChannel function in utils.js... ');
+  console.log('username: ', username);
+  console.log('channel_id: ', channel_id)
+  console.log('message: ', message)
   try {
-    const channel = await Channel.findByPk(channel_id);
-    const message = await Message.create({
-      channel_id,
-      user_id,
-      message
+    const channel = await Channel.findOne({
+      where: {id:channel_id},
+      attributes: ['id', 'name', 'server_id']
     });
-    message.setChannel(channel);
-    await message.save();
-    return {
+    const newMessage = await Message.create({
+      channel_id,
+      username,
       message,
-      channel: await message.getChannel()
-    }
+    });
+    newMessage.setChannel(channel);
+    await newMessage.save();
+    console.log(newMessage)
+    return newMessage;
   } catch (e) {
     console.error(e);
   }

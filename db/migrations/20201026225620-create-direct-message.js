@@ -13,10 +13,9 @@ module.exports = {
         allowNull: false,
         references: { model: "Groups" },
       },
-      user_id: {
-        type: Sequelize.INTEGER,
+      username: {
+        type: Sequelize.STRING,
         allowNull: false,
-        references: { model: "Users" },
       },
       message: {
         type: Sequelize.STRING,

@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const DirectMessage = sequelize.define('DirectMessage', {
     group_id: DataTypes.INTEGER,
-    user_id: DataTypes.INTEGER,
+    username: DataTypes.STRING,
     message: {
       type: DataTypes.STRING
     },

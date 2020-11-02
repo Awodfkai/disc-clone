@@ -43,7 +43,6 @@ router.post(
   asyncHandler(async (req, res, next) => {
     const { username, password } = req.body;
     const userExists = await User.findOne({where:{username}});
-    console.log(userExists)
     if(!userExists || !bcrypt.compareSync(password, userExists.password.toString())){
       const err = new Error('Login failed');
       err.status = 401;
@@ -53,7 +52,6 @@ router.post(
     }
     const token = generateToken(userExists);
     const jti = token.jti;
-    console.log('jti in user.js api route: ', jti)
     userExists.tokenId = jti;
     await userExists.save();
     res.cookie('auth-token', token);

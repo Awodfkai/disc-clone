@@ -15,6 +15,7 @@ router.get(
       order: [
         ['createdAt', 'ASC']
       ],
+      attributes: ['channel_id', 'username', 'message', 'pinned', 'createdAt']
     })
     res.status(200).json(messages)
   })
@@ -36,7 +37,6 @@ router.post(
   '/create',
   authenticated,
   asyncHandler(async (req, res, next) => {
-    console.log('made it into the post route for channel create')
     const { name, server_id } = req.body;
     const channel = await Channel.create({
       name, server_id

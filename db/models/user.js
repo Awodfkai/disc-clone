@@ -6,8 +6,6 @@ module.exports = (sequelize, DataTypes) => {
     tokenId: DataTypes.STRING
   }, {});
   User.associate = function(models) {
-    User.hasMany(models.Message, {foreignKey:'user_id', onDelete:'CASCADE'})
-    User.hasMany(models.DirectMessage, { foreignKey: 'user_id', onDelete: 'CASCADE' })
     User.hasMany(models.ServerMember, { foreignKey: 'user_id', onDelete: 'CASCADE' })
     User.hasMany(models.GroupMember, { foreignKey: 'user_id', onDelete: 'CASCADE' })
   };

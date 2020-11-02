@@ -18,9 +18,7 @@ function generateToken(user) {
 }
 
 function restoreUser(req, res, next) {
-  console.log('checking token')
   const { token } = req;
-  console.log('token in restore user', token)
 
   if (!token) {
     return next({ status: 401, message: 'no token' });
@@ -33,7 +31,6 @@ function restoreUser(req, res, next) {
     }
 
     const {id} = payload.data;
-    console.log('id in auth.js: ', id)
 
     try {
       req.user = await User.findOne( {where: {id}});
